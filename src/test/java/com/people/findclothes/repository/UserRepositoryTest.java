@@ -26,7 +26,6 @@ public class UserRepositoryTest {
                 .password("1234")
                 .email("email@google.com")
                 .nickname("nickname")
-                .name("신짱구")
                 .userRole(UserRole.MEMBER)
                 .build();
 
@@ -47,7 +46,6 @@ public class UserRepositoryTest {
                 .password("1234")
                 .email("email@google.com")
                 .nickname("nickname")
-                .name("신짱구")
                 .userRole(UserRole.MEMBER)
                 .build();
 

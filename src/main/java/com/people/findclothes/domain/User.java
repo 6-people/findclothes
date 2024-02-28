@@ -30,9 +30,6 @@ public class User {
     @Column(nullable = false)
     private String nickname;
 
-    @Column(nullable = false, updatable = false)
-    private String name;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserRole userRole;

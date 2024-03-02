@@ -1,7 +1,7 @@
 package com.people.findclothes.config;
 
-import com.people.findclothes.dto.security.CustomAccessDeniedHandler;
-import com.people.findclothes.dto.security.CustomAuthenticationEntryPoint;
+import com.people.findclothes.util.security.CustomAccessDeniedHandler;
+import com.people.findclothes.util.security.CustomAuthenticationEntryPoint;
 import com.people.findclothes.util.jwt.JwtAuthenticationFilter;
 import com.people.findclothes.util.jwt.JwtExceptionFilter;
 import lombok.RequiredArgsConstructor;

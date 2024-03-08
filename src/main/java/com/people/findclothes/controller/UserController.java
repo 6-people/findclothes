@@ -1,6 +1,7 @@
 package com.people.findclothes.controller;
 
 import com.people.findclothes.dto.request.RequestUserLoginDto;
+import com.people.findclothes.dto.request.RequestUserSaveDto;
 import com.people.findclothes.dto.response.ResponseErrorDto;
 import com.people.findclothes.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,5 +45,10 @@ public class UserController {
     public ResponseEntity<Void> logout() {
         userService.logout();
         return ResponseEntity.ok().build();
+    }
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody RequestUserSaveDto requestDto) {
+        userService.saveUser(requestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

@@ -38,6 +38,7 @@ public class SecurityConfig {
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // jwt 인증 : session 미사용
                 .authorizeHttpRequests((authz) -> authz // 권한 설정
                         .requestMatchers("/user/login").permitAll()
+                        .requestMatchers("/user/register").permitAll() // 회원가입
                         .requestMatchers("/swagger-ui/**", "/v3/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()

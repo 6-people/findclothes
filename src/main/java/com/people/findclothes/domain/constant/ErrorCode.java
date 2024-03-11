@@ -10,7 +10,8 @@ public enum ErrorCode {
     ANONYMOUS_USER(401, "Unauthorized - Anonymous User"),
     ACCESS_DENIED(403, "Access Denied"),
     USER_NOT_FOUND(404, "User Not Found"),
-    PASSWORD_MISMATCH(400, "Password Mismatch");
-    private final long status;
+    PASSWORD_MISMATCH(400, "Password Mismatch"),
+    USER_ALREADY_EXISTS(400, "User Already Exists");
+    private final int status;
     private final String error;
 }

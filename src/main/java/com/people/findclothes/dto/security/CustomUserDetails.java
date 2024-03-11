@@ -5,14 +5,12 @@ import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Builder
-public class CustomUserDetails implements UserDetails, OAuth2User {
+public class CustomUserDetails implements UserDetails {
 
     private User user;
 
@@ -61,23 +59,5 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    // OAuth2User
-    private Map<String, Object> attributes;
-
-    public CustomUserDetails(User user, Map<String, Object> attributes) {
-        this.user = user;
-        this.attributes = attributes;
-    }
-
-    @Override
-    public Map<String, Object> getAttributes() {
-        return attributes;
-    }
-
-    @Override
-    public String getName() {
-        return user.getNickname();
     }
 }

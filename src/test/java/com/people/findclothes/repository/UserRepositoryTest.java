@@ -19,7 +19,7 @@ public class UserRepositoryTest {
 
     @DisplayName("유저 저장")
     @Test
-    public void saveUser() {
+    public void save() {
         // given
         User user = User.builder()
                 .id("userId")
@@ -37,9 +37,9 @@ public class UserRepositoryTest {
         assertThat(savedUser.getUserRole()).isEqualTo(user.getUserRole());
     }
 
-    @DisplayName("유저 조회")
+    @DisplayName("유저 조회 - ID")
     @Test
-    public void findUser() {
+    public void findById() {
         // given
         User user = User.builder()
                 .id("userId")
@@ -57,4 +57,5 @@ public class UserRepositoryTest {
         assertThat(savedUser).isSameAs(findUser);
         assertThat(findUser.getCreateAt()).isEqualTo(savedUser.getCreateAt());
     }
+
 }

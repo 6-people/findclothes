@@ -21,9 +21,6 @@ public class CustumUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("해당 ID의 유저가 존재하지 않아 로그인 실패하였습니다."));
-
-        return CustomUserDetails.builder()
-                .user(user)
-                .build();
+        return new CustomUserDetails(user);
     }
 }

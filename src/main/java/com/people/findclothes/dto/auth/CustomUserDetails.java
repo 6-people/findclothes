@@ -1,4 +1,4 @@
-package com.people.findclothes.dto.security;
+package com.people.findclothes.dto.auth;
 
 import com.people.findclothes.domain.User;
 import lombok.Builder;

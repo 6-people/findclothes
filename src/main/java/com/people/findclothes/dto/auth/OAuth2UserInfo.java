@@ -1,4 +1,4 @@
-package com.people.findclothes.dto.security;
+package com.people.findclothes.dto.auth;
 
 import com.people.findclothes.domain.User;
 import com.people.findclothes.domain.constant.UserRole;
@@ -34,7 +34,7 @@ public class OAuth2UserInfo {
     private static OAuth2UserInfo ofGoogle(Map<String, Object> attributes) {
         return OAuth2UserInfo.builder()
                 .provider("google")
-                .id("google_" + (String) attributes.get("sub"))
+                .id("google_" + attributes.get("sub"))
                 .password((String) attributes.get("sub"))
                 .nickname((String) attributes.get("name"))
                 .email((String) attributes.get("email"))
@@ -53,7 +53,7 @@ public class OAuth2UserInfo {
     private static OAuth2UserInfo ofNaver(Map<String, Object> attributes) {
         return OAuth2UserInfo.builder()
                 .provider("naver")
-                .id("naver_" + (String) ((Map) attributes.get("response")).get("id"))
+                .id("naver_" + ((Map) attributes.get("response")).get("id"))
                 .password((String) ((Map) attributes.get("response")).get("id"))
                 .nickname((String) ((Map) attributes.get("response")).get("name"))
                 .build();

@@ -1,6 +1,6 @@
 package com.people.findclothes.util.jwt;
 
-import com.people.findclothes.dto.security.CustomUserDetails;
+import com.people.findclothes.dto.auth.CustomUserDetails;
 import com.people.findclothes.exception.JwtException;
 import com.people.findclothes.service.CustumUserDetailService;
 import io.jsonwebtoken.*;

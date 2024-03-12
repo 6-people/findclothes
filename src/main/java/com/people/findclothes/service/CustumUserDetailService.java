@@ -1,7 +1,7 @@
 package com.people.findclothes.service;
 
 import com.people.findclothes.domain.User;
-import com.people.findclothes.dto.security.CustomUserDetails;
+import com.people.findclothes.dto.auth.CustomUserDetails;
 import com.people.findclothes.exception.UserNotFoundException;
 import com.people.findclothes.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

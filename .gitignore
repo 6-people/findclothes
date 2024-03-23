@@ -40,3 +40,4 @@ out/
 *.pem
 *.yml
 .DS_STORE
+jenkins-script

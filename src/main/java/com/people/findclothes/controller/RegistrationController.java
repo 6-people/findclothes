@@ -30,7 +30,7 @@ public class RegistrationController {
     )
     @PostMapping
     public ResponseEntity<String> register(@RequestBody RequestUserSaveDto requestDto) {
-        userService.saveUser(requestDto);
+        userService.save(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

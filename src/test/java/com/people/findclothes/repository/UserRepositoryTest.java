@@ -11,7 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // ActiveProfiles에 설정한 환경값에 따라 적용
 public class UserRepositoryTest {
 
     @Autowired
@@ -21,13 +21,7 @@ public class UserRepositoryTest {
     @Test
     public void save() {
         // given
-        User user = User.builder()
-                .id("userId")
-                .password("1234")
-                .email("email@google.com")
-                .nickname("nickname")
-                .userRole(UserRole.MEMBER)
-                .build();
+        User user = createUser();
 
         // when
         User savedUser = userRepository.save(user);
@@ -37,17 +31,11 @@ public class UserRepositoryTest {
         assertThat(savedUser.getUserRole()).isEqualTo(user.getUserRole());
     }
 
-    @DisplayName("유저 조회 - ID")
+    @DisplayName("아이디로 유저 조회")
     @Test
     public void findById() {
         // given
-        User user = User.builder()
-                .id("userId")
-                .password("1234")
-                .email("email@google.com")
-                .nickname("nickname")
-                .userRole(UserRole.MEMBER)
-                .build();
+        User user = createUser();
 
         // when
         User savedUser = userRepository.save(user);
@@ -58,4 +46,47 @@ public class UserRepositoryTest {
         assertThat(findUser.getCreateAt()).isEqualTo(savedUser.getCreateAt());
     }
 
+    @DisplayName("해당 이메일로 저장된 유저 존재 여부 조회")
+    @Test
+    public void existsByEmail() {
+        // given
+        String unsavedEmail = "unsavedEmail@google.com";
+        User user = createUser();
+
+        // when
+        User savedUser = userRepository.save(user);
+        boolean isExists_unsaved = userRepository.existsByEmail(unsavedEmail);
+        boolean isExists_saved = userRepository.existsByEmail(savedUser.getEmail());
+
+        // then
+        assertThat(isExists_unsaved).isFalse();
+        assertThat(isExists_saved).isTrue();
+    }
+
+    @DisplayName("해당 닉네임으로 저장된 유저 존재 여부 조회")
+    @Test
+    public void existsByNickname() {
+        // given
+        String unsavedNickname = "unsavedNickname";
+        User user = createUser();
+
+        // when
+        User savedUser = userRepository.save(user);
+        boolean isExists_unsaved = userRepository.existsByNickname(unsavedNickname);
+        boolean isExists_saved = userRepository.existsByNickname(savedUser.getNickname());
+
+        // then
+        assertThat(isExists_unsaved).isFalse();
+        assertThat(isExists_saved).isTrue();
+    }
+
+    public User createUser() {
+        return User.builder()
+                .id("userId")
+                .password("1234")
+                .email("email@google.com")
+                .nickname("nickname")
+                .userRole(UserRole.MEMBER)
+                .build();
+    }
 }

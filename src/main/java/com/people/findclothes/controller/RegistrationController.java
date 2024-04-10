@@ -23,7 +23,7 @@ public class RegistrationController {
 
     @Operation(summary = "일반 회원가입", description = "입력 정보와 중복되는 유저 정보가 없다면 회원가입",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "회원가입 성공"),
+                    @ApiResponse(responseCode = "201", description = "회원가입 성공"),
                     @ApiResponse(responseCode = "400", description = "중복되는 회원 정보로 회원가입 실패",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseErrorDto.class)))
             }
@@ -41,7 +41,6 @@ public class RegistrationController {
     )
     @GetMapping("/isDuplicatedId")
     public ResponseEntity<Boolean> isDuplicatedId(@RequestParam("id") String id) {
-        System.out.println("id = " + id);
         return ResponseEntity.ok(userService.isDuplicatedId(id));
     }
 

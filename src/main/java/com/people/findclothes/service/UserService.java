@@ -81,7 +81,6 @@ public class UserService {
     /**
      * [로그아웃]<br>
      * DB에서 로그인 유저의 id를 검색해 일치하는 jwt 삭제
-     *
      */
     @Transactional(readOnly = true)
     public void logout() {
@@ -97,8 +96,8 @@ public class UserService {
      * @exception UserAlreadyExistsException 입력 정보와 중복인 회원 정보가 있을 경우
      */
     @Transactional
-    public void saveUser(RequestUserSaveDto requestDto) {
-        if (isDuplicatedEmail(requestDto.getEmail()) || isDuplicatedId(requestDto.getId()) || isDuplicatedNickname(requestDto.getNickname())) {
+    public void save(RequestUserSaveDto requestDto) {
+        if (isDuplicatedId(requestDto.getId()) || isDuplicatedEmail(requestDto.getEmail()) || isDuplicatedNickname(requestDto.getNickname())) {
             throw new UserAlreadyExistsException("중복된 회원 정보로 인해 회원가입에 실패하였습니다.");
         }
 
@@ -113,32 +112,35 @@ public class UserService {
     }
 
     /**
+     * [아이디 중복 검사]<br>
      * Unique한 값을 가져야하나, id가 중복된 값을 가질 경우를 검증
      *
      * @param id 회원 가입 시 입력한 값
      * @return boolean
      */
     public boolean isDuplicatedId(String id) {
-        return userRepository.findById(id).isPresent();
+        return userRepository.existsById(id);
     }
 
     /**
+     * [이메일 중복 검사]<br>
      * Unique한 값을 가져야하나, email이 중복된 값을 가질 경우를 검증
      *
      * @param email 회원 가입 시 입력한 값
      * @return boolean
      */
     public boolean isDuplicatedEmail(String email) {
-        return userRepository.findByEmail(email).isPresent();
+        return userRepository.existsByEmail(email);
     }
 
     /**
+     * [닉네임 중복 검사]<br>
      * Unique한 값을 가져야하나, nickname이 중복된 값을 가질 경우를 검증
      *
      * @param nickname 회원 가입 시 입력한 값
      * @return boolean
      */
     public boolean isDuplicatedNickname(String nickname) {
-        return userRepository.findByNickname(nickname).isPresent();
+        return userRepository.existsByNickname(nickname);
     }
 }

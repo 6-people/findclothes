@@ -36,6 +36,7 @@ dependencies {
 	implementation 'io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64' // m1 mac os를 위한 netty-resolver-dns 종속성 추가
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+	implementation 'com.google.code.gson:gson:2.9.0'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'

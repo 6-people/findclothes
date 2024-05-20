@@ -136,18 +136,18 @@ public class UserService {
     /**
      * [회원 삭제]
      *
-     * @param Id 회원 id
-     * @param Password 회원 password
+     * @param id 회원 id
+     * @param password 회원 password
      * @exception RuntimeException password를 틀린 경우
      */
     @Transactional
-    public void deleteUser(String Id, String Password) {
-        User existingUser = userRepository.findById(Id)
+    public void deleteUser(String id, String password) {
+        User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("해당 사용자를 찾을 수 없습니다."));
-        if (!existingUser.getPassword().equals(passwordEncoder.encode(Password))) {
+        if (!existingUser.getPassword().equals(passwordEncoder.encode(password))) {
             throw new PasswordMismatchException("잘못된 패스워드로 회원 삭제에 실패하였습니다.");
         }
-        userRepository.deleteById(Id);
+        userRepository.deleteById(id);
     }
     /**
      * Unique한 값을 가져야하나, id가 중복된 값을 가질 경우를 검증

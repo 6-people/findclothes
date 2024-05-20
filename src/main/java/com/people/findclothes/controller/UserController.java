@@ -29,9 +29,9 @@ public class UserController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseErrorDto.class)))
             }
     )
-    @PostMapping("/upadate")
-    public ResponseEntity<String> Update(@PathVariable String Id, @RequestBody RequestUserUpdateDto requestDto) {
-        userService.modifyInfo(Id, requestDto);
+    @PostMapping()
+    public ResponseEntity<String> update(@PathVariable String id, @RequestBody RequestUserUpdateDto requestDto) {
+        userService.modifyInfo(id, requestDto);
         return ResponseEntity.ok().build();
     }
 
@@ -42,9 +42,9 @@ public class UserController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseErrorDto.class)))
             }
     )
-    @PostMapping("/delete")
-    public ResponseEntity<String> Delete(@PathVariable String Id, String Password) {
-        userService.deleteUser(Id, Password);
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> delete(@PathVariable String id, String password) {
+        userService.deleteUser(id, password);
         return ResponseEntity.ok().build();
     }
 

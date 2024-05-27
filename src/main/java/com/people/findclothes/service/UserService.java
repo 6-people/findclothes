@@ -3,11 +3,12 @@ package com.people.findclothes.service;
 import com.people.findclothes.domain.User;
 import com.people.findclothes.domain.constant.UserRole;
 import com.people.findclothes.dto.UserDto;
-import com.people.findclothes.dto.request.RequestUserLoginDto;
-import com.people.findclothes.dto.request.RequestUserSaveDto;
 import com.people.findclothes.dto.auth.CustomUserDetails;
 import com.people.findclothes.dto.auth.OAuth2UserInfo;
-import com.people.findclothes.dto.request.RequestUserUpdateDto;
+import com.people.findclothes.dto.request.RequestUserLoginDto;
+import com.people.findclothes.dto.request.RequestUserSaveDto;
+import com.people.findclothes.dto.request.RequestUserUpdateNicknameDto;
+import com.people.findclothes.dto.request.RequestUserUpdatePasswordDto;
 import com.people.findclothes.exception.PasswordMismatchException;
 import com.people.findclothes.exception.UserAlreadyExistsException;
 import com.people.findclothes.exception.UserNotFoundException;
@@ -83,7 +84,6 @@ public class UserService {
     /**
      * [로그아웃]<br>
      * DB에서 로그인 유저의 id를 검색해 일치하는 jwt 삭제
-     *
      */
     @Transactional(readOnly = true)
     public void logout() {
@@ -115,40 +115,56 @@ public class UserService {
     }
 
     /**
-     * [회원 정보 변경]
+     * [회원 닉네임 변경]
      *
-     * @param requestDto 회원의 현재 id, password, nickname
-     * @
-     * @exception UserAlreadyExistsException 입력 정보와 중복인 회원 정보가 있을 경우
+     * @param requestDto 회원의 id, 변경하려는 nickname
+     * @exception UserAlreadyExistsException 변경하려는 nickname이 이미 존재하는 경우
+     * @exception UserNotFoundException 일치하는 유저 정보가 없는 경우
      */
-    public void modifyInfo(String userId, RequestUserUpdateDto requestDto) {
-        User existingUser = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("해당 사용자를 찾을 수 없습니다."));
+    @Transactional
+    public void updateNickname(RequestUserUpdateNicknameDto requestDto) {
+        if (isDuplicatedNickname(requestDto.getNewNickname()))
+            throw new UserAlreadyExistsException("중복된 닉네임로 인해 회원 닉네임 변경에 실패하였습니다.");
+        User user = userRepository.findById(requestDto.getId()).orElseThrow(() -> new UserNotFoundException("해당 사용자를 찾을 수 없습니다."));
 
-        if (isDuplicatedNickname(requestDto.getNickname())) {
-            throw new UserAlreadyExistsException("중복된 닉네임로 인해 회원 정보 변경에 실패하였습니다.");
-        }
-        RequestUserUpdateDto employeeDto = RequestUserUpdateDto.from(existingUser);
-        employeeDto.updateFields(requestDto);
-
-        userRepository.save(existingUser);
+        UserDto userDto = UserDto.from(user);
+        userDto.updateNickname(requestDto.getNewNickname());
+        userRepository.save(userDto.toEntity());
     }
+
+    /**
+     * [회원 비밀번호 변경]
+     *
+     * @param requestDto 회원의 id, 기존 password, 새로운 Password
+     * @exception UserNotFoundException 일치하는 유저 정보가 없는 경우
+     * @exception PasswordMismatchException password를 틀린 경우
+     */
+    @Transactional
+    public void updatePassword(RequestUserUpdatePasswordDto requestDto) {
+        User user = userRepository.findById(requestDto.getId()).orElseThrow(() -> new UserNotFoundException("해당 사용자를 찾을 수 없습니다."));
+        if (!passwordEncoder.matches(requestDto.getOldPassword(), user.getPassword()))
+            throw new PasswordMismatchException("비밀번호가 일치하지 않아 회원 비밀번호 변경에 실패하였습니다.");
+
+        UserDto userDto = UserDto.from(user);
+        userDto.updatePassword(passwordEncoder.encode(requestDto.getNewPassword()));
+        userRepository.save(userDto.toEntity());
+    }
+
     /**
      * [회원 삭제]
      *
-     * @param id 회원 id
-     * @param password 회원 password
-     * @exception RuntimeException password를 틀린 경우
+     * @param requestDto id, password
+     * @exception PasswordMismatchException password를 틀린 경우
      */
     @Transactional
-    public void deleteUser(String id, String password) {
-        User existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("해당 사용자를 찾을 수 없습니다."));
-        if (!existingUser.getPassword().equals(passwordEncoder.encode(password))) {
-            throw new PasswordMismatchException("잘못된 패스워드로 회원 삭제에 실패하였습니다.");
-        }
-        userRepository.deleteById(id);
+    public void deleteUser(RequestUserLoginDto requestDto) {
+        User user = userRepository.findById(requestDto.getId()).orElseThrow(() -> new UserNotFoundException("해당 사용자를 찾을 수 없습니다."));
+        if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword()))
+            throw new PasswordMismatchException("비밀번호가 일치하지 않아 회원 삭제에 실패하였습니다.");
+
+        userRepository.deleteById(user.getId());
     }
+
     /**
      * Unique한 값을 가져야하나, id가 중복된 값을 가질 경우를 검증
      *

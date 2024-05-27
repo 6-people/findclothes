@@ -57,7 +57,7 @@ public class UserController {
     )
     @DeleteMapping()
     public ResponseEntity<String> delete(@RequestBody RequestUserLoginDto requestDto) {
-        userService.deleteUser(requestDto);
+        userService.delete(requestDto);
         return ResponseEntity.ok().build();
     }
 

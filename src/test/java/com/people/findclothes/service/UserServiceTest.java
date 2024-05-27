@@ -24,6 +24,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
+import static com.people.findclothes.CreateObject.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -318,37 +319,6 @@ class UserServiceTest {
                 .nickname("nickname")
                 .userRole(UserRole.MEMBER)
                 .password(passwordEncoder.encode("1234"))
-                .build();
-    }
-
-    public RequestUserSaveDto createRequestUserSaveDto() {
-        return RequestUserSaveDto.builder()
-                .id("userId")
-                .email("email@google.com")
-                .nickname("nickname")
-                .password("1234")
-                .build();
-    }
-
-    public RequestUserUpdateNicknameDto createRequestUserUpdateNicknameDto() {
-        return RequestUserUpdateNicknameDto.builder()
-                .id("userId")
-                .newNickname("newNickname")
-                .build();
-    }
-
-    public RequestUserUpdatePasswordDto createRequestUserUpdatePasswordDto(String password) {
-        return RequestUserUpdatePasswordDto.builder()
-                .id("userId")
-                .oldPassword(password)
-                .newPassword("newPassword")
-                .build();
-    }
-
-    public RequestUserLoginDto createRequestUserLoginDto() {
-        return RequestUserLoginDto.builder()
-                .id("userId")
-                .password("password")
                 .build();
     }
 }

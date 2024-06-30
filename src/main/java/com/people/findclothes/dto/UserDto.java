@@ -2,6 +2,7 @@ package com.people.findclothes.dto;
 
 import com.people.findclothes.domain.User;
 import com.people.findclothes.domain.constant.UserRole;
+import com.people.findclothes.dto.request.RequestUserUpdateNicknameDto;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -40,4 +41,26 @@ public class UserDto {
                 .updateAt(entity.getUpdateAt())
                 .build();
     }
+
+    public User toEntity() {
+        return User.builder()
+                .id(id)
+                .password(password)
+                .email(email)
+                .nickname(nickname)
+                .userRole(userRole)
+                .provider(provider)
+                .createAt(createAt)
+                .updateAt(updateAt)
+                .build();
+    }
+
+    public void updateNickname(String newNickname) {
+        this.nickname = newNickname;
+    }
+
+    public void updatePassword(String newPassword) {
+        this.password = newPassword;
+    }
+
 }

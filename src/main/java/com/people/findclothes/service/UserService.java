@@ -2,10 +2,13 @@ package com.people.findclothes.service;
 
 import com.people.findclothes.domain.User;
 import com.people.findclothes.domain.constant.UserRole;
-import com.people.findclothes.dto.request.RequestUserLoginDto;
-import com.people.findclothes.dto.request.RequestUserSaveDto;
+import com.people.findclothes.dto.UserDto;
 import com.people.findclothes.dto.auth.CustomUserDetails;
 import com.people.findclothes.dto.auth.OAuth2UserInfo;
+import com.people.findclothes.dto.request.RequestUserLoginDto;
+import com.people.findclothes.dto.request.RequestUserSaveDto;
+import com.people.findclothes.dto.request.RequestUserUpdateNicknameDto;
+import com.people.findclothes.dto.request.RequestUserUpdatePasswordDto;
 import com.people.findclothes.exception.PasswordMismatchException;
 import com.people.findclothes.exception.UserAlreadyExistsException;
 import com.people.findclothes.exception.UserNotFoundException;
@@ -109,6 +112,57 @@ public class UserService {
                         .userRole(UserRole.MEMBER)
                         .password(passwordEncoder.encode(requestDto.getPassword()))
                         .build());
+    }
+
+    /**
+     * [회원 닉네임 변경]
+     *
+     * @param requestDto 회원의 id, 변경하려는 nickname
+     * @exception UserAlreadyExistsException 변경하려는 nickname이 이미 존재하는 경우
+     * @exception UserNotFoundException 일치하는 유저 정보가 없는 경우
+     */
+    @Transactional
+    public void updateNickname(RequestUserUpdateNicknameDto requestDto) {
+        if (isDuplicatedNickname(requestDto.getNewNickname()))
+            throw new UserAlreadyExistsException("중복된 닉네임로 인해 회원 닉네임 변경에 실패하였습니다.");
+        User user = userRepository.findById(requestDto.getId()).orElseThrow(() -> new UserNotFoundException("해당 사용자를 찾을 수 없습니다."));
+
+        UserDto userDto = UserDto.from(user);
+        userDto.updateNickname(requestDto.getNewNickname());
+        userRepository.save(userDto.toEntity());
+    }
+
+    /**
+     * [회원 비밀번호 변경]
+     *
+     * @param requestDto 회원의 id, 기존 password, 새로운 Password
+     * @exception UserNotFoundException 일치하는 유저 정보가 없는 경우
+     * @exception PasswordMismatchException password를 틀린 경우
+     */
+    @Transactional
+    public void updatePassword(RequestUserUpdatePasswordDto requestDto) {
+        User user = userRepository.findById(requestDto.getId()).orElseThrow(() -> new UserNotFoundException("해당 사용자를 찾을 수 없습니다."));
+        if (!passwordEncoder.matches(requestDto.getOldPassword(), user.getPassword()))
+            throw new PasswordMismatchException("비밀번호가 일치하지 않아 회원 비밀번호 변경에 실패하였습니다.");
+
+        UserDto userDto = UserDto.from(user);
+        userDto.updatePassword(passwordEncoder.encode(requestDto.getNewPassword()));
+        userRepository.save(userDto.toEntity());
+    }
+
+    /**
+     * [회원 삭제]
+     *
+     * @param requestDto id, password
+     * @exception PasswordMismatchException password를 틀린 경우
+     */
+    @Transactional
+    public void delete(RequestUserLoginDto requestDto) {
+        User user = userRepository.findById(requestDto.getId()).orElseThrow(() -> new UserNotFoundException("해당 사용자를 찾을 수 없습니다."));
+        if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword()))
+            throw new PasswordMismatchException("비밀번호가 일치하지 않아 회원 삭제에 실패하였습니다.");
+
+        userRepository.deleteById(user.getId());
     }
 
     /**

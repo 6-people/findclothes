@@ -40,7 +40,6 @@ public class RequestKakaoInfo implements RequestOAuth2UserInfo {
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.add("grant_type", grantType);
         formData.add("client_id", clientId);
-        formData.add("client_secret", clientSecret);
         formData.add("redirect_uri", redirectUrl);
         formData.add("code", code);
         return formData;

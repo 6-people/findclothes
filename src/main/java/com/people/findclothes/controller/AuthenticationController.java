@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import net.minidev.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,6 +57,14 @@ public class AuthenticationController {
     @GetMapping("/login/social/kakao")
     public ResponseEntity<String> kakaoLogin(@RequestParam("code") String code) {
         return ResponseEntity.ok(userService.socialLogin("kakao", oAuthRequestFactory.getOAuth2UserInfo(requestKakaoInfo, code)));
+    }
+
+    @Operation(summary = "소셜 로그인 - 네이버", description = "인증 코드를 통해 액세스 토큰과 사용자 정보를 요청하여 성공 시 jwt 반환",
+            responses = {@ApiResponse(responseCode = "200", description = "유저 id가 담긴 jwt을 성공적으로 반환")}
+    )
+    @GetMapping("/login/social/naver/code")
+    public ResponseEntity<JSONObject> getNaverLoginCode(@RequestParam("code") String code) {
+        return ResponseEntity.ok(oAuthRequestFactory.requestToken(requestNaverInfo, code));
     }
 
     @Operation(summary = "소셜 로그인 - 네이버", description = "인증 코드를 통해 액세스 토큰과 사용자 정보를 요청하여 성공 시 jwt 반환",

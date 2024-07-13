@@ -1,11 +1,13 @@
 package com.people.findclothes.util.OAuth2.requestOAtuh2UserInfo;
 
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 @Component
+@Getter
 public class RequestNaverInfo implements RequestOAuth2UserInfo {
     @Value("${spring.security.oauth2.naver.client-id}")
     private String clientId;
@@ -24,16 +26,6 @@ public class RequestNaverInfo implements RequestOAuth2UserInfo {
 
     @Value("${spring.security.oauth2.naver.profile-url}")
     private String profileUrl;
-
-    @Override
-    public String getTokenUrl() {
-        return tokenUrl;
-    }
-
-    @Override
-    public String getProfileUrl() {
-        return profileUrl;
-    }
 
     @Override
     public MultiValueMap<String, String> getBody(String code) {

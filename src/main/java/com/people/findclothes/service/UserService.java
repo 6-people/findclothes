@@ -114,6 +114,12 @@ public class UserService {
                         .build());
     }
 
+    @Transactional
+    public String getNickname(String id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("해당 사용자를 찾을 수 없습니다."));
+        return user.getNickname();
+    }
+
     /**
      * [회원 닉네임 변경]
      *

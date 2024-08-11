@@ -22,6 +22,11 @@ public class UserController {
 
     private final UserService userService;
 
+    @GetMapping("/nickname")
+    public ResponseEntity<String> getInfo(@RequestParam String id) {
+        return ResponseEntity.ok(userService.getNickname(id));
+    }
+
     @Operation(summary = "회원 닉네임 변경", description = "닉네임 중복 확인 후 회원 닉네임 변경",
             responses = {
                     @ApiResponse(responseCode = "200", description = "회원 닉네임 변경 성공"),

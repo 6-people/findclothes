@@ -28,7 +28,7 @@ public class RegistrationController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseErrorDto.class)))
             }
     )
-    @PostMapping
+    @PostMapping(produces="text/plain;charset=UTF-8")
     public ResponseEntity<String> register(@RequestBody RequestUserSaveDto requestDto) {
         userService.save(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -39,7 +39,7 @@ public class RegistrationController {
                     @ApiResponse(responseCode = "200", description = "id 중복 조회 성공")
             }
     )
-    @GetMapping("/isDuplicatedId")
+    @GetMapping(value = "/isDuplicatedId", produces="text/plain;charset=UTF-8")
     public ResponseEntity<Boolean> isDuplicatedId(@RequestParam("id") String id) {
         return ResponseEntity.ok(userService.isDuplicatedId(id));
     }
@@ -49,7 +49,7 @@ public class RegistrationController {
                     @ApiResponse(responseCode = "200", description = "email 중복 조회 성공")
             }
     )
-    @GetMapping("/isDuplicatedEmail")
+    @GetMapping(value = "/isDuplicatedEmail", produces="text/plain;charset=UTF-8")
     public ResponseEntity<Boolean> isDuplicatedEmail(@RequestParam("email") String email) {
         return ResponseEntity.ok(userService.isDuplicatedEmail(email));
     }
@@ -59,7 +59,7 @@ public class RegistrationController {
                     @ApiResponse(responseCode = "200", description = "nickname 중복 조회 성공")
             }
     )
-    @GetMapping("/isDuplicatedNickname")
+    @GetMapping(value = "/isDuplicatedNickname", produces="text/plain;charset=UTF-8")
     public ResponseEntity<Boolean> isDuplicatedNickname(@RequestParam("nickname") String nickname) {
         return ResponseEntity.ok(userService.isDuplicatedNickname(nickname));
     }

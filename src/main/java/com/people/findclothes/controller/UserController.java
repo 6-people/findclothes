@@ -22,7 +22,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/nickname")
+    @GetMapping(value = "/nickname", produces="text/plain;charset=UTF-8")
     public ResponseEntity<String> getInfo(@RequestParam String id) {
         return ResponseEntity.ok(userService.getNickname(id));
     }
@@ -34,7 +34,7 @@ public class UserController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseErrorDto.class)))
             }
     )
-    @PutMapping("/updateNickname")
+    @PutMapping(value = "/updateNickname", produces="text/plain;charset=UTF-8")
     public ResponseEntity<String> updateNickname(@RequestBody RequestUserUpdateNicknameDto requestDto) {
         userService.updateNickname(requestDto);
         return ResponseEntity.ok().build();
@@ -47,7 +47,7 @@ public class UserController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseErrorDto.class)))
             }
     )
-    @PutMapping("/updatePassword")
+    @PutMapping(value = "/updatePassword", produces="text/plain;charset=UTF-8")
     public ResponseEntity<String> updatePassword(@RequestBody RequestUserUpdatePasswordDto requestDto) {
         userService.updatePassword(requestDto);
         return ResponseEntity.ok().build();
@@ -60,7 +60,7 @@ public class UserController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseErrorDto.class)))
             }
     )
-    @DeleteMapping()
+    @DeleteMapping(produces="text/plain;charset=UTF-8")
     public ResponseEntity<String> delete(@RequestBody RequestUserLoginDto requestDto) {
         userService.delete(requestDto);
         return ResponseEntity.ok().build();

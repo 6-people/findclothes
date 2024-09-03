@@ -18,7 +18,7 @@ public class AdminController {
                     @ApiResponse(responseCode = "403", description = "권한이 없어서 접근 실패")
             }
     )
-    @GetMapping
+    @GetMapping(produces="text/plain;charset=UTF-8")
     public ResponseEntity<Void> test() {
         return ResponseEntity.ok().build();
     }

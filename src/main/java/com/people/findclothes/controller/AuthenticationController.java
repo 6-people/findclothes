@@ -38,7 +38,7 @@ public class AuthenticationController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseErrorDto.class)))
             }
     )
-    @PostMapping("/login")
+    @PostMapping(value = "/login", produces="text/plain;charset=UTF-8")
     public ResponseEntity<String> login(@RequestBody RequestUserLoginDto requestDto) {
         return ResponseEntity.ok(userService.login(requestDto));
     }
@@ -46,7 +46,7 @@ public class AuthenticationController {
     @Operation(summary = "소셜 로그인 - 구글", description = "인증 코드를 통해 액세스 토큰과 사용자 정보를 요청하여 성공 시 jwt 반환",
             responses = {@ApiResponse(responseCode = "200", description = "유저 id가 담긴 jwt을 성공적으로 반환")}
     )
-    @GetMapping("/login/social/google")
+    @GetMapping(value = "/login/social/google", produces="text/plain;charset=UTF-8")
     public ResponseEntity<String> googleLogin(@RequestParam("code") String code) {
         return ResponseEntity.ok(userService.socialLogin("google", oAuthRequestFactory.getOAuth2UserInfo(requestGoogleInfo, code)));
     }
@@ -54,7 +54,7 @@ public class AuthenticationController {
     @Operation(summary = "소셜 로그인 - 카카오", description = "인증 코드를 통해 액세스 토큰과 사용자 정보를 요청하여 성공 시 jwt 반환",
             responses = {@ApiResponse(responseCode = "200", description = "유저 id가 담긴 jwt을 성공적으로 반환")}
     )
-    @GetMapping("/login/social/kakao")
+    @GetMapping(value = "/login/social/kakao", produces="text/plain;charset=UTF-8")
     public ResponseEntity<String> kakaoLogin(@RequestParam("code") String code) {
         return ResponseEntity.ok(userService.socialLogin("kakao", oAuthRequestFactory.getOAuth2UserInfo(requestKakaoInfo, code)));
     }
@@ -62,7 +62,7 @@ public class AuthenticationController {
     @Operation(summary = "소셜 로그인 - 네이버", description = "인증 코드를 통해 액세스 토큰과 사용자 정보를 요청하여 성공 시 jwt 반환",
             responses = {@ApiResponse(responseCode = "200", description = "유저 id가 담긴 jwt을 성공적으로 반환")}
     )
-    @GetMapping("/login/social/naver/code")
+    @GetMapping(value = "/login/social/naver/code", produces="text/plain;charset=UTF-8")
     public ResponseEntity<JSONObject> getNaverLoginCode(@RequestParam("code") String code) {
         return ResponseEntity.ok(oAuthRequestFactory.requestToken(requestNaverInfo, code));
     }
@@ -78,7 +78,7 @@ public class AuthenticationController {
     @Operation(summary = "로그아웃", description = "DB에서 로그인 유저의 jwt 삭제",
             responses = {@ApiResponse(responseCode = "200", description = "jwt를 성공적으로 삭제")}
     )
-    @PostMapping("/logout")
+    @PostMapping(value = "/logout", produces="text/plain;charset=UTF-8")
     public ResponseEntity<Void> logout() {
         userService.logout();
         return ResponseEntity.ok().build();
